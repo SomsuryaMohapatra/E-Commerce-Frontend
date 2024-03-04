@@ -12,6 +12,7 @@ const getDefaultCart = () => {
 const ShopContextProvider = (props) => {
   const [cartItems, setCartItems] = useState(getDefaultCart());
   const [all_product, setAll_Product] = useState([]);
+  const [newCollections, setNewCollections] = useState([]);
 
   useEffect(() => {
     fetch("http://localhost:4000/api/allproducts")
@@ -19,6 +20,10 @@ const ShopContextProvider = (props) => {
       .then((resData) => {
         setAll_Product(resData.products);
       });
+
+    fetch("http://localhost:4000/api/newcollections")
+      .then((res) => res.json())
+      .then((resData) => setNewCollections(resData.new_collections_products));
   }, []);
 
   const addToCart = (itemId) => {
@@ -68,6 +73,7 @@ const ShopContextProvider = (props) => {
 
   const contextValue = {
     all_product,
+    newCollections,
     cartItems,
     addToCart,
     removeFromCart,
